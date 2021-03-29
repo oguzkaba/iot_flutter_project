@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -35,32 +37,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final List<IconData> iconlist = [
-      Icons.lightbulb,
-      Icons.memory,
-      Icons.animation,
-      Icons.eco,
-      Icons.face,
-      Icons.fingerprint,
-      Icons.room,
-      Icons.settings,
-      Icons.wifi,
-      Icons.mic,
-      Icons.mic_off
+    final List<String> iconlist = [
+      "assets/image/smart-light.png",
+      "assets/image/smart-temperature.png"
     ];
 
     final List<Color> colorList = [
-      Colors.black26,
+      Color.fromRGBO(255, 104, 51, 1),
       Colors.amber.shade400,
-      Colors.black26,
-      Colors.amber.shade400,
-      Colors.black26,
-      Colors.amber.shade400,
-      Colors.black26,
-      Colors.amber.shade400,
-      Colors.black26,
-      Colors.amber.shade400,
-      Colors.black26
     ];
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  GestureDetector newWidget(Size size, IconData icon, Color color) {
+  GestureDetector newWidget(Size size, String icon, Color color) {
     return GestureDetector(
       onTap: () {
         debugPrint("Oldu");
@@ -91,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         height: size.height * 0.1,
         width: size.width * 0.07,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color.fromRGBO(255, 240, 235, 1),
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
@@ -105,11 +89,14 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(icon, size: 40, color: color),
-            Text("Açık",
+            Image.asset(
+              icon,
+              color: color,
+            ),
+            Text("",
                 style: TextStyle(
                     fontSize: 10,
-                    color: Colors.amber,
+                    color: Color.fromRGBO(255, 195, 173, 1),
                     fontWeight: FontWeight.bold)),
           ],
         ),
