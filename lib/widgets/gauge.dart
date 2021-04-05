@@ -13,8 +13,8 @@ class GaugeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(5),
-      height: size.height * 0.15,
-      width: size.width * 0.1,
+      height: size.height * 0.12,
+      width: size.width * 0.2,
       decoration: BoxDecoration(
         color: GlobalVal.box_orange,
         borderRadius: BorderRadius.circular(10),
@@ -31,6 +31,9 @@ class GaugeWidget extends StatelessWidget {
             text: "Temp", textStyle: TextStyle(fontWeight: FontWeight.bold)),
         axes: <RadialAxis>[
           RadialAxis(
+            startAngle: 170,
+            endAngle: 10,
+            centerY: 0.6,
               annotations: <GaugeAnnotation>[
                 GaugeAnnotation(
                     widget: Container(
@@ -40,7 +43,7 @@ class GaugeWidget extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 color: GlobalVal.orange))),
                     angle: 90,
-                    positionFactor: 0.9)
+                    positionFactor: 0.7)
               ],
               showLabels: false,
               interval: 10,

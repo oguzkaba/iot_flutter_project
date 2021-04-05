@@ -30,8 +30,8 @@ class _ButtonWidgetState extends State<ButtonWidget> {
       onTap: () {},
       child: Container(
         margin: EdgeInsets.all(5),
-        height: widget.size.height * 0.15,
-        width: widget.size.width * 0.1,
+        height: widget.size.height * 0.12,
+        width: widget.size.width * 0.2,
         decoration: BoxDecoration(
           color: widget.boxColor,
           borderRadius: BorderRadius.circular(10),
