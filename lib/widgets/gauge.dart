@@ -6,9 +6,12 @@ class GaugeWidget extends StatelessWidget {
   const GaugeWidget({
     Key key,
     @required this.size,
+    @required this.value,
   }) : super(key: key);
 
   final Size size;
+  final double value;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,28 +34,28 @@ class GaugeWidget extends StatelessWidget {
             text: "Temp", textStyle: TextStyle(fontWeight: FontWeight.bold)),
         axes: <RadialAxis>[
           RadialAxis(
-            startAngle: 170,
-            endAngle: 10,
-            centerY: 0.6,
+              startAngle: 160,
+              endAngle: 20,
+              centerY: 0.5,
               annotations: <GaugeAnnotation>[
                 GaugeAnnotation(
                     widget: Container(
-                        child: Text('24.0 °C',
+                        child: Text(value.toString() + '°C',
                             style: TextStyle(
                                 fontSize: 9,
                                 fontWeight: FontWeight.bold,
                                 color: GlobalVal.orange))),
                     angle: 90,
-                    positionFactor: 0.7)
+                    positionFactor: 0.95)
               ],
               showLabels: false,
               interval: 10,
               minimum: -10,
               maximum: 40,
-              axisLineStyle: AxisLineStyle(thickness: 10),
+              axisLineStyle: AxisLineStyle(thickness: 8),
               pointers: <GaugePointer>[
                 NeedlePointer(
-                    value: 24,
+                    value: value ?? 20,
                     enableAnimation: true,
                     animationDuration: 2000,
                     needleStartWidth: 0,
@@ -66,8 +69,8 @@ class GaugeWidget extends StatelessWidget {
                     tailStyle: TailStyle(
                         color: Color(0xff222222), width: 2, length: 0.15)),
                 RangePointer(
-                    value: 24,
-                    width: 10,
+                    value: value ?? 20,
+                    width: 8,
                     enableAnimation: true,
                     animationDuration: 2000,
                     color: Colors.orangeAccent)

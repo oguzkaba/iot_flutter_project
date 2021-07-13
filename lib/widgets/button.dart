@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatefulWidget {
-  const ButtonWidget({
-    Key key,
-    @required this.size,
-    @required this.icon,
-    @required this.color,
-    @required this.boxColor,
-    @required this.text,
-    @required this.textColor,
-    @required this.title,
-  }) : super(key: key);
+  const ButtonWidget(
+      {Key key,
+      @required this.size,
+      @required this.icon,
+      @required this.color,
+      @required this.boxColor,
+      @required this.text,
+      @required this.textColor,
+      @required this.title,
+      this.tapFunc})
+      : super(key: key);
   final Size size;
   final String icon;
   final Color color;
@@ -18,7 +19,7 @@ class ButtonWidget extends StatefulWidget {
   final Color textColor;
   final String text;
   final String title;
-
+  final Function tapFunc;
   @override
   _ButtonWidgetState createState() => _ButtonWidgetState();
 }
@@ -27,7 +28,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: widget.tapFunc,
       child: Container(
         margin: EdgeInsets.all(5),
         height: widget.size.height * 0.12,
@@ -51,12 +52,12 @@ class _ButtonWidgetState extends State<ButtonWidget> {
               widget.title,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: widget.size.height * 0.02),
+            SizedBox(height: widget.size.height * 0.008),
             Image.asset(
               widget.icon,
               color: widget.color,
             ),
-            SizedBox(height: widget.size.height * 0.015),
+            SizedBox(height: widget.size.height * 0.01),
             Text(widget.text,
                 style: TextStyle(
                     fontSize: 10,
