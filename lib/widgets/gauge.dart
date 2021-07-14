@@ -1,4 +1,4 @@
-import 'package:iot_flutter_project/util/globals.dart';
+import 'package:iot_flutter_project/utils/globals.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,11 @@ class GaugeWidget extends StatelessWidget {
       height: size.height * 0.12,
       width: size.width * 0.2,
       decoration: BoxDecoration(
-        color: GlobalVal.box_orange,
+        color: value > 25
+            ? GlobalVal.box_red
+            : value > 15
+                ? GlobalVal.box_orange
+                : GlobalVal.box_blue,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -42,11 +46,16 @@ class GaugeWidget extends StatelessWidget {
                     widget: Container(
                         child: Text(value.toString() + '°C',
                             style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
-                                color: GlobalVal.orange))),
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                              color: value > 25
+                                  ? GlobalVal.red
+                                  : value > 15
+                                      ? GlobalVal.orange
+                                      : GlobalVal.blue,
+                            ))),
                     angle: 90,
-                    positionFactor: 0.95)
+                    positionFactor: 0.70)
               ],
               showLabels: false,
               interval: 10,
@@ -57,23 +66,31 @@ class GaugeWidget extends StatelessWidget {
                 NeedlePointer(
                     value: value ?? 20,
                     enableAnimation: true,
-                    animationDuration: 2000,
+                    animationDuration: 3000,
                     needleStartWidth: 0,
                     needleEndWidth: 2,
                     needleColor: Color(0xff222222),
                     knobStyle: KnobStyle(
-                        color: Colors.redAccent,
+                        color: value > 25
+                            ? GlobalVal.red
+                            : value > 15
+                                ? GlobalVal.orange
+                                : GlobalVal.blue,
                         borderColor: Color(0xff222222),
                         knobRadius: 0.06,
                         borderWidth: 0.04),
-                    tailStyle: TailStyle(
-                        color: Color(0xff222222), width: 2, length: 0.15)),
+                    tailStyle:
+                        TailStyle(color: Colors.black, width: 2, length: 0.15)),
                 RangePointer(
                     value: value ?? 20,
                     width: 8,
                     enableAnimation: true,
-                    animationDuration: 2000,
-                    color: Colors.orangeAccent)
+                    animationDuration: 3000,
+                    color: value > 25
+                        ? GlobalVal.red
+                        : value > 15
+                            ? GlobalVal.orange
+                            : GlobalVal.blue)
               ])
         ],
       ),

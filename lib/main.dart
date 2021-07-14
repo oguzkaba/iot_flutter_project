@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:iot_flutter_project/util/globals.dart';
+import 'package:iot_flutter_project/controller/dataController.dart';
 import 'package:flutter/material.dart';
+import 'package:iot_flutter_project/utils/globals.dart';
+import 'package:iot_flutter_project/widgets/button.dart';
+import 'package:iot_flutter_project/widgets/gauge.dart';
 
 Future<void> main() async {
   // await GetStorage.init();
@@ -15,19 +17,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Future<FirebaseApp> _fbase = Firebase.initializeApp();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    //   DeviceOrientation.portraitDown,
+    // ]);
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         defaultTransition: Transition.native,
         home: FutureBuilder(
             future: _fbase,
             builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return Text('Data bulunamadı...');
-              }
+              // if (snapshot.data == null) {
+              //   return Text('Data bulunamadı...');
+              // }
               if (snapshot.hasError) {
                 return Center(child: Text('Beklenmeyen bir hata oluştu...'));
               } else if (snapshot.hasData) {
@@ -52,13 +54,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 FirebaseFirestore fstore = FirebaseFirestore.instance;
-CollectionReference<Map<String, dynamic>> coll = fstore.collection('persons');
-double value;
+CollectionReference<Map<String, dynamic>> coll = fstore.collection('temp');
+DataController dc = Get.put(DataController());
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    gaugeData();
+    _gaugeData();
     super.initState();
   }
 
@@ -78,68 +80,77 @@ class _HomeScreenState extends State<HomeScreen> {
           if (aSnapshots.hasError) {
             return Center(child: Text('Bir hata oluştu...'));
           } else if (aSnapshots.hasData) {
-            return ListView.builder(
-                itemCount: aSnapshots.data.docs.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Icon(Icons.folder),
-                    trailing: Text(
-                        aSnapshots.data.docs[index].data()['age'].toString()),
-                    title: Text(aSnapshots.data.docs[index].data()['name']),
-                  );
-                });
+            _gaugeData();
+            return Obx(() => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    ButtonWidget(
+                      tapFunc: () => dc.lightValue.value = !dc.lightValue.value,
+                      title: "Light",
+                      size: size,
+                      icon: GlobalVal.light,
+                      color: dc.lightValue.value
+                          ? GlobalVal.disabled
+                          : GlobalVal.yellow,
+                      boxColor: dc.lightValue.value
+                          ? GlobalVal.box_disabled
+                          : GlobalVal.box_yellow,
+                      text: dc.lightValue.value ? "Off" : "On",
+                      textColor: dc.changeView("light").last,
+                    ),
+                    SizedBox(width: size.width * 0.01),
+                    ButtonWidget(
+                      tapFunc: () =>
+                          dc.coolerValue.value = !dc.coolerValue.value,
+                      title: "Cooler",
+                      size: size,
+                      icon: GlobalVal.cooler,
+                      color: GlobalVal.green,
+                      boxColor: GlobalVal.box_green,
+                      text: dc.coolerValue.value ? "Close" : "Open",
+                      textColor: GlobalVal.green,
+                    ),
+                    ButtonWidget(
+                      tapFunc: () => dc.doorValue.value = !dc.doorValue.value,
+                      title: "Door",
+                      size: size,
+                      icon: GlobalVal.door,
+                      color: GlobalVal.blue,
+                      boxColor: GlobalVal.box_blue,
+                      text: dc.doorValue.value ? "Close" : "Open",
+                      textColor: GlobalVal.blue,
+                    ),
+                    GaugeWidget(size: size, value: dc.tempValue.value),
+                  ],
+                ));
+            //_showListview(aSnapshots);dc.tempValue.value
           } else {
             return Center(child: CircularProgressIndicator());
           }
         },
       ),
-
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   children: <Widget>[
-      //     ButtonWidget(
-      //       tapFunc: () {
-      //         print('object');
-      //       },
-      //       title: "Light",
-      //       size: size,
-      //       icon: GlobalVal.light,
-      //       color: GlobalVal.yellow,
-      //       boxColor: GlobalVal.box_yellow,
-      //       text: "Off",
-      //       textColor: GlobalVal.yellow,
-      //     ),
-      //     SizedBox(width: size.width * 0.01),
-      //     ButtonWidget(
-      //       title: "Cooler",
-      //       size: size,
-      //       icon: GlobalVal.cooler,
-      //       color: GlobalVal.green,
-      //       boxColor: GlobalVal.box_green,
-      //       text: "Close",
-      //       textColor: GlobalVal.green,
-      //     ),
-      //     // ButtonWidget(
-      //     //   title: "Door",
-      //     //   size: size,
-      //     //   icon: GlobalVal.door,
-      //     //   color: GlobalVal.blue,
-      //     //   boxColor: GlobalVal.box_blue,
-      //     //   text: "Close",
-      //     //   textColor: GlobalVal.blue,
-      //     // ),
-      //     GaugeWidget(size: size, value: value),
-      //     ElevatedButton(onPressed: () => gaugeData(), child: Text('Get'))
-      //   ],
-      // ),
     );
   }
 
-  Future gaugeData() async {
+  ListView _showListview(
+      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> aSnapshots) {
+    return ListView.builder(
+        itemCount: aSnapshots.data.docs.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: Icon(Icons.folder),
+            trailing: Text(aSnapshots.data.docs[index].data()['device_name']),
+            title: Text(aSnapshots.data.docs[index].data()['temp'].toString()),
+          );
+        });
+  }
+
+  Future _gaugeData() async {
     var response = await coll.get();
     var data = response.docs.first.data();
-    value = data['age'].toDouble();
-    print(data['age'].toString());
+    //setState(() => value = data['temp'].toDouble());
+    dc.tempValue.value = data['temp'].toDouble();
+    print(dc.tempValue.value.toString());
   }
 }

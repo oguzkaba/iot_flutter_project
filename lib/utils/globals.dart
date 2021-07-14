@@ -15,6 +15,8 @@ class GlobalVal {
   static const Color box_disabled = const Color(0xffEBEBEB);
   static const Color blue = const Color(0xff1F9EFF);
   static const Color box_blue = const Color(0xffD6EDFF);
+  static const Color red = const Color(0xffE42535);
+  static const Color box_red = const Color(0xffF9C8CB);
   //image
   static const String cooler = "assets/image/smart-cooler.png";
   static const String temp = "assets/image/smart-temperature.png";
