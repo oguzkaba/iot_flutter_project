@@ -66,7 +66,7 @@ class GaugeWidget extends StatelessWidget {
                 NeedlePointer(
                     value: value ?? 20,
                     enableAnimation: true,
-                    animationDuration: 3000,
+                    animationDuration: 500,
                     needleStartWidth: 0,
                     needleEndWidth: 2,
                     needleColor: Color(0xff222222),
@@ -85,7 +85,7 @@ class GaugeWidget extends StatelessWidget {
                     value: value ?? 20,
                     width: 8,
                     enableAnimation: true,
-                    animationDuration: 3000,
+                    animationDuration: 500,
                     color: value > 25
                         ? GlobalVal.red
                         : value > 15

@@ -13,9 +13,21 @@ class DataController extends GetxController {
     switch (type) {
       case "light":
         if (lightValue.value)
-          return [GlobalVal.box_yellow, GlobalVal.yellow];
-        else
           return [GlobalVal.box_disabled, GlobalVal.disabled];
+        else
+          return [GlobalVal.box_yellow, GlobalVal.yellow];
+        break;
+      case "cooler":
+        if (coolerValue.value)
+          return [GlobalVal.box_disabled, GlobalVal.disabled];
+        else
+          return [GlobalVal.box_green, GlobalVal.green];
+        break;
+      case "door":
+        if (doorValue.value)
+          return [GlobalVal.box_disabled, GlobalVal.disabled];
+        else
+          return [GlobalVal.box_blue, GlobalVal.blue];
         break;
       default:
     }
